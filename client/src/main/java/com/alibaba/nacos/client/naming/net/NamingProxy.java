@@ -488,7 +488,33 @@ public class NamingProxy implements Closeable {
         
         return listView;
     }
-    
+
+    public ListView<String> getServiceList() throws NacosException {
+        List<String> serviceNames = new ArrayList<String>();
+        int totalCount;
+        int pageNo = 1;
+        int pageSize = 500;
+        do {
+            Map<String, String> params = new HashMap<String, String>(4);
+            params.put("pageNo", String.valueOf(pageNo));
+            params.put("pageSize", String.valueOf(pageSize));
+            params.put(CommonParams.NAMESPACE_ID, namespaceId);
+
+            String result = reqApi(UtilAndComs.nacosUrlBase + "/service/list", params, HttpMethod.GET);
+
+            JsonNode json = JacksonUtils.toObj(result);
+            totalCount = json.get("count").asInt();
+
+            List<String> names = JacksonUtils.toObj(json.get("doms").toString(), new TypeReference<List<String>>() { });
+            serviceNames.addAll(names);
+        } while (serviceNames.size() < totalCount);
+
+        ListView<String> listView = new ListView<String>();
+        listView.setCount(totalCount);
+        listView.setData(serviceNames);
+        return listView;
+    }
+
     public String reqApi(String api, Map<String, String> params, String method) throws NacosException {
         return reqApi(api, params, Collections.EMPTY_MAP, method);
     }

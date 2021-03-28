@@ -555,7 +555,15 @@ public interface NamingService {
      */
     ListView<String> getServicesOfServer(int pageNo, int pageSize, String groupName, AbstractSelector selector)
             throws NacosException;
-    
+
+    /**
+     * Get all service names from server with selector.
+     *
+     * @return list of service names
+     * @throws NacosException nacos exception
+     */
+    ListView<String> getServicesOfServer() throws NacosException;
+
     /**
      * Get all subscribed services of current client.
      *

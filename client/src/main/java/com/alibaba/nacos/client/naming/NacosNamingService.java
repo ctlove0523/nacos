@@ -503,6 +503,11 @@ public class NacosNamingService implements NamingService {
     }
     
     @Override
+    public ListView<String> getServicesOfServer() throws NacosException {
+        return serverProxy.getServiceList();
+    }
+
+    @Override
     public List<ServiceInfo> getSubscribeServices() {
         return hostReactor.getSubscribeServices();
     }
